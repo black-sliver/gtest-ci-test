@@ -26,21 +26,26 @@ on:
 
 jobs:
 
-  test-ubuntu:
+  test:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
+    name: test-${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: ilammy/msvc-dev-cmd@v1
         if: startsWith(matrix.os,'windows')
       - uses: Bacondish2023/setup-googletest@v1
-      - run: |
+        with:
+          build-type: 'Release'
+      - name: Run tests
+        run: |
           cd test
           mkdir build
           cmake -S . -B build/ -DCMAKE_BUILD_TYPE=Release
-          cmake --build build/
+          cmake --build build/ --config Release
           ctest --test-dir build/
