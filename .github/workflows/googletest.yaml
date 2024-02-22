@@ -1,0 +1,46 @@
+name: googletest
+
+on:
+  push:
+    paths:
+      - '**.c'
+      - '**.cc'
+      - '**.cpp'
+      - '**.cxx'
+      - '**.h'
+      - '**.hh'
+      - '**.hpp'
+      - '**/CMakeLists.txt'
+      - '.github/workflows/googletest.yaml'
+  pull_request:
+    paths:
+      - '**.c'
+      - '**.cc'
+      - '**.cpp'
+      - '**.cxx'
+      - '**.h'
+      - '**.hh'
+      - '**.hpp'
+      - '**/CMakeLists.txt'
+      - '.github/workflows/googletest.yaml'
+
+jobs:
+
+  test-ubuntu:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: startsWith(matrix.os,'windows')
+      - uses: Bacondish2023/setup-googletest@v1
+      - run: |
+          cd test
+          mkdir build
+          cmake -S . -B build/ -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/
+          ctest --test-dir build/
