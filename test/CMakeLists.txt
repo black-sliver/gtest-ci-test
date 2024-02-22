@@ -9,6 +9,11 @@ if (WIN32)
     add_definitions("/source-charset:utf-8")
     set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
     set(CMAKE_CXX_FLAGS_RELEASE "/MT")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # enable static analysis for gcc
+    add_compile_options(-fanalyzer -Werror)
+    # disable stuff that gets triggered by googletest
+    add_compile_options(-Wno-analyzer-malloc-leak)
 endif ()
 
 add_executable(test_everything)
