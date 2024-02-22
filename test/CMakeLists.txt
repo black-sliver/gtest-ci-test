@@ -5,7 +5,7 @@ enable_testing()
 
 find_package(GTest REQUIRED)
 
-if (WIN32)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_definitions("/source-charset:utf-8")
     set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
     set(CMAKE_CXX_FLAGS_RELEASE "/MT")
