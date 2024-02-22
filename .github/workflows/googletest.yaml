@@ -42,10 +42,14 @@ jobs:
       - uses: Bacondish2023/setup-googletest@v1
         with:
           build-type: 'Release'
-      - name: Run tests
+      - name: Build tests
         run: |
           cd test
           mkdir build
           cmake -S . -B build/ -DCMAKE_BUILD_TYPE=Release
           cmake --build build/ --config Release
-          ctest --test-dir build/
+          ls
+      - name: Run tests
+        run: |
+          cd test
+          ctest --test-dir build/ -C Release
