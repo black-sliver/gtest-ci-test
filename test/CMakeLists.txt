@@ -14,6 +14,9 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-fanalyzer -Werror)
     # disable stuff that gets triggered by googletest
     add_compile_options(-Wno-analyzer-malloc-leak)
+    # enable asan for gcc
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
 endif ()
 
 add_executable(test_everything)
